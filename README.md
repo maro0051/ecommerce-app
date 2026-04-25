@@ -1,59 +1,177 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🛍️ Premium E-Commerce Platform
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A fully-featured, professional e-commerce web application built with Laravel 12, SQLite, and Tailwind CSS. This platform provides a complete online shopping experience with admin dashboard, user authentication, product management, shopping cart, order processing, and real-time notifications.
 
-## About Laravel
+## 📋 Table of Contents
+- [Features](#features)
+- [Technology Stack](#technology-stack)
+- [System Requirements](#system-requirements)
+- [Installation Guide](#installation-guide)
+- [Configuration](#configuration)
+- [Database Setup](#database-setup)
+- [Running the Application](#running-the-application)
+- [Default Credentials](#default-credentials)
+- [Project Structure](#project-structure)
+- [API Endpoints](#api-endpoints)
+- [Features in Detail](#features-in-detail)
+- [Security Features](#security-features)
+- [Troubleshooting](#troubleshooting)
+- [Screenshots](#screenshots)
+- [License](#license)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## ✨ Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 👤 User Features
+- ✅ User Registration & Login with Laravel Breeze
+- ✅ Beautiful Dark Blue Theme with Glass Morphism Design
+- ✅ Product Browsing with Search & Filter
+- ✅ Product Details View with Image Gallery
+- ✅ Shopping Cart Management (Add, Update, Remove)
+- ✅ Secure Checkout Process
+- ✅ Order History & Tracking
+- ✅ User Profile Management
+- ✅ Password Reset Functionality
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 👑 Admin Features
+- ✅ Admin Dashboard with Statistics
+- ✅ Complete Product Management (CRUD)
+- ✅ Order Management with Status Updates
+- ✅ Real-time Order Notifications
+- ✅ Stock Management
+- ✅ View All Customer Orders
+- ✅ Order Status Tracking (Pending, Processing, Completed, Cancelled)
 
-## Learning Laravel
+### 🔐 Security Features
+- ✅ Role-Based Access Control (Admin/Customer)
+- ✅ 10-Minute Inactivity Auto-Logout
+- ✅ Session Management with Activity Tracking
+- ✅ CSRF Protection
+- ✅ XSS Prevention
+- ✅ SQL Injection Prevention (Eloquent ORM)
+- ✅ Password Hashing (BCrypt)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### 🎨 UI/UX Features
+- ✅ Responsive Design (Mobile, Tablet, Desktop)
+- ✅ Dark Blue Theme with Gradient Effects
+- ✅ Glass Morphism Card Design
+- ✅ Smooth Animations & Transitions
+- ✅ Floating Action Buttons
+- ✅ Real-time Form Validation
+- ✅ Toast Notifications
+- ✅ Loading Spinners
+- ✅ Custom Scrollbar
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 📱 Additional Features
+- ✅ REST API for Products
+- ✅ Email Notifications for New Orders
+- ✅ Browser Push Notifications
+- ✅ Address Autocomplete (OpenStreetMap)
+- ✅ Newsletter Subscription
+- ✅ Contact Form
+- ✅ FAQ Section
+- ✅ About Us Page
+- ✅ Privacy Policy & Terms Pages
 
-## Laravel Sponsors
+## 🛠 Technology Stack
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+| Technology | Version | Purpose |
+|------------|---------|---------|
+| Laravel | 12.57.0 | Backend Framework |
+| PHP | 8.4.15 | Server-side Language |
+| SQLite | 3.x | Database |
+| Tailwind CSS | 3.x | Styling Framework |
+| Alpine.js | 3.x | Frontend Interactivity |
+| jQuery | 3.x | DOM Manipulation |
+| Font Awesome | 6.x | Icons |
+| Google Fonts | - | Typography |
+| OpenStreetMap | - | Address Autocomplete |
 
-### Premium Partners
+## 💻 System Requirements
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+- **PHP**: 8.2 or higher
+- **Composer**: Latest version
+- **Node.js**: 18.x or higher (for asset compilation)
+- **NPM**: 9.x or higher
+- **Web Server**: Apache/Nginx/Laravel Valet/Herd
+- **Database**: SQLite (included) or MySQL/PostgreSQL
+- **Storage**: Minimum 100MB free space
 
-## Contributing
+## 📥 Installation Guide
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Step 1: Clone the Repository
 
-## Code of Conduct
+```bash
+git clone https://github.com/yourusername/ecommerce-app.git
+cd ecommerce-app
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+ecommerce-app/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   ├── Admin/
+│   │   │   │   ├── DashboardController.php
+│   │   │   │   ├── OrderController.php
+│   │   │   │   └── ProductController.php
+│   │   │   ├── Auth/
+│   │   │   ├── CartController.php
+│   │   │   ├── OrderController.php
+│   │   │   ├── PageController.php
+│   │   │   └── ProductController.php
+│   │   ├── Middleware/
+│   │   │   ├── AdminMiddleware.php
+│   │   │   └── TrackUserActivity.php
+│   │   └── Requests/
+│   ├── Models/
+│   │   ├── User.php
+│   │   ├── Product.php
+│   │   ├── Cart.php
+│   │   ├── Order.php
+│   │   └── OrderItem.php
+│   ├── Notifications/
+│   │   └── NewOrderNotification.php
+│   └── Helpers/
+│       └── SessionHelper.php
+├── database/
+│   ├── migrations/
+│   ├── seeders/
+│   └── database.sqlite
+├── resources/
+│   └── views/
+│       ├── layouts/
+│       │   ├── app.blade.php
+│       │   └── navigation.blade.php
+│       ├── auth/
+│       │   ├── login.blade.php
+│       │   └── register.blade.php
+│       ├── products/
+│       │   ├── index.blade.php
+│       │   └── show.blade.php
+│       ├── cart/
+│       │   └── index.blade.php
+│       ├── orders/
+│       │   ├── index.blade.php
+│       │   └── show.blade.php
+│       ├── admin/
+│       │   ├── dashboard.blade.php
+│       │   ├── products/
+│       │   └── orders/
+│       ├── pages/
+│       │   ├── about.blade.php
+│       │   ├── contact.blade.php
+│       │   ├── help.blade.php
+│       │   ├── privacy.blade.php
+│       │   └── terms.blade.php
+│       └── components/
+│           ├── auth-modal.blade.php
+│           ├── admin-notifications.blade.php
+│           └── address-autocomplete.blade.php
+├── routes/
+│   ├── web.php
+│   └── api.php
+├── public/
+│   └── storage/
+├── .env
+├── composer.json
+├── package.json
+└── README.md
