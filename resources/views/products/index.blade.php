@@ -7,9 +7,7 @@
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <!-- Hero Section -->
         <div class="text-center mb-12">
-            <h1 class="text-5xl font-bold gradient-text mb-4 animate__animated animate__fadeIn">
-                Our Premium Collection
-            </h1>
+            <h1 class="text-5xl font-bold gradient-text mb-4">Our Premium Collection</h1>
             <p class="text-gray-400 text-lg">Discover amazing products at great prices</p>
         </div>
 
@@ -82,14 +80,13 @@
                                     </button>
                                 @endif
                             @else
-                                <button onclick="window.dispatchEvent(new CustomEvent('open-auth-modal'))" 
-                                        class="bg-gray-700 text-white px-4 py-2 rounded-lg text-sm hover:bg-gray-600 transition-all flex items-center gap-2">
+                                <button onclick="openAuthModal()" 
+                                        class="bg-gray-700 text-white px-4 py-2 rounded-lg text-sm hover:bg-gray-600 transition-all inline-flex items-center gap-2">
                                     <i class="fas fa-lock"></i> Login to Buy
                                 </button>
                             @endauth
                         </div>
                         
-                        <!-- View Details Link -->
                         <div class="mt-3 pt-3 border-t border-primary-light/30">
                             <a href="{{ route('products.show', $product) }}" 
                                class="text-accent hover:text-accent-light text-sm flex items-center justify-center gap-1 transition-colors">

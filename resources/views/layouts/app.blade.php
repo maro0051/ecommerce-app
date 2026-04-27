@@ -41,6 +41,7 @@
             min-height: 100vh;
         }
 
+        /* Glass Card Effect */
         .glass-card {
             background: rgba(31, 41, 55, 0.7);
             backdrop-filter: blur(10px);
@@ -56,6 +57,7 @@
             box-shadow: 0 12px 48px rgba(0, 212, 255, 0.2);
         }
 
+        /* Button Styles */
         .btn-primary {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             border: none;
@@ -94,6 +96,7 @@
             box-shadow: 0 0 20px var(--accent);
         }
 
+        /* Input Fields */
         .input-glow {
             background: rgba(31, 41, 55, 0.8);
             border: 1px solid var(--primary-light);
@@ -111,6 +114,26 @@
             background: rgba(31, 41, 55, 0.9);
         }
 
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .product-card {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .page-transition {
+            animation: fadeInUp 0.5s ease-out;
+        }
+
         .gradient-text {
             background: linear-gradient(135deg, var(--accent) 0%, var(--primary-light) 100%);
             -webkit-background-clip: text;
@@ -118,6 +141,16 @@
             color: transparent;
         }
 
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.15);
+        }
+
+        /* Navigation */
         .nav-glow {
             background: rgba(15, 23, 42, 0.8);
             backdrop-filter: blur(10px);
@@ -125,6 +158,7 @@
             transition: all 0.3s ease;
         }
 
+        /* Scrollbar */
         ::-webkit-scrollbar {
             width: 10px;
         }
@@ -174,15 +208,6 @@
                 </div>
             @endif
 
-            @if(session('warning'))
-                <div class="max-w-7xl mx-auto mt-4 px-4 sm:px-6 lg:px-8">
-                    <div class="bg-yellow-500/20 border border-yellow-500 text-yellow-400 px-4 py-3 rounded-lg relative" role="alert">
-                        <i class="fas fa-clock mr-2"></i>
-                        <span class="block sm:inline">{{ session('warning') }}</span>
-                    </div>
-                </div>
-            @endif
-
             @yield('content')
         </main>
     </div>
@@ -197,154 +222,43 @@
     </div>
     @endauth
 
-    <!-- Inactivity Timer Script -->
+    <!-- Auth Modal Component -->
+    @include('components.auth-modal')
+
+    <!-- Global Functions - Make sure openAuthModal is available everywhere -->
     <script>
-        // Inactivity timeout in milliseconds (10 minutes)
-        const INACTIVITY_TIMEOUT = 10 * 60 * 1000;
-        let inactivityTimer;
-        let countdownInterval;
-        let warningModal = null;
-        
-        // Function to reset the inactivity timer
-        function resetInactivityTimer() {
-            if (inactivityTimer) {
-                clearTimeout(inactivityTimer);
-            }
-            inactivityTimer = setTimeout(() => {
-                showInactivityWarning();
-            }, INACTIVITY_TIMEOUT);
-        }
-        
-        // Function to show warning before logout
-        function showInactivityWarning() {
-            if (warningModal) return;
-            
-            const modalHtml = `
-                <div id="inactivityModal" class="fixed inset-0 z-50 flex items-center justify-center p-4" style="background: rgba(0,0,0,0.8);">
-                    <div class="glass-card max-w-md w-full p-6 text-center">
-                        <div class="w-20 h-20 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i class="fas fa-clock text-4xl text-yellow-500"></i>
-                        </div>
-                        <h3 class="text-xl font-bold gradient-text mb-3">Session Expiring Soon</h3>
-                        <p class="text-gray-300 mb-4">You have been inactive for 10 minutes. For security reasons, you will be logged out.</p>
-                        <div class="flex gap-3">
-                            <button onclick="stayLoggedIn()" class="flex-1 btn-primary">
-                                <i class="fas fa-check mr-2"></i> Stay Logged In
-                            </button>
-                            <button onclick="logoutNow()" class="flex-1 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-all">
-                                <i class="fas fa-sign-out-alt mr-2"></i> Logout
-                            </button>
-                        </div>
-                        <p class="text-xs text-gray-400 mt-4">You will be logged out in <span id="countdown">30</span> seconds</p>
-                    </div>
-                </div>
-            `;
-            
-            document.body.insertAdjacentHTML('beforeend', modalHtml);
-            warningModal = document.getElementById('inactivityModal');
-            
-            let seconds = 30;
-            const countdownElement = document.getElementById('countdown');
-            countdownInterval = setInterval(() => {
-                seconds--;
-                if (countdownElement) {
-                    countdownElement.textContent = seconds;
+        // Define the function globally
+        window.openAuthModal = function() {
+            console.log('openAuthModal called');
+            var modal = document.getElementById('authModal');
+            if (modal) {
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+                // Reset to login tab
+                if (typeof switchTab === 'function') {
+                    switchTab('login');
                 }
-                if (seconds <= 0) {
-                    clearInterval(countdownInterval);
-                    logoutNow();
-                }
-            }, 1000);
-        }
-        
-        // Function to stay logged in
-        function stayLoggedIn() {
-            if (warningModal) {
-                warningModal.remove();
-                warningModal = null;
+            } else {
+                console.error('Modal not found');
+                // Fallback: redirect to login page
+                window.location.href = '{{ route("login") }}?redirect=' + encodeURIComponent(window.location.href);
             }
-            if (countdownInterval) {
-                clearInterval(countdownInterval);
+        };
+        
+        window.closeAuthModal = function() {
+            var modal = document.getElementById('authModal');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
             }
-            
-            fetch('/keep-alive', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                }
-            }).then(response => {
-                if (response.ok) {
-                    resetInactivityTimer();
-                    updateSessionTimer();
-                }
-            });
-        }
+        };
         
-        // Function to logout immediately
-        function logoutNow() {
-            if (warningModal) {
-                warningModal.remove();
-                warningModal = null;
-            }
-            if (countdownInterval) {
-                clearInterval(countdownInterval);
-            }
-            
-            const logoutForm = document.createElement('form');
-            logoutForm.method = 'POST';
-            logoutForm.action = '/logout';
-            logoutForm.innerHTML = '<input type="hidden" name="_token" value="' + document.querySelector('meta[name="csrf-token"]').getAttribute('content') + '">';
-            document.body.appendChild(logoutForm);
-            logoutForm.submit();
-        }
+        // Make sure the function is also available on the window object
+        window.openLoginModal = window.openAuthModal;
         
-        // Update session timer display
-        function updateSessionTimer() {
-            fetch('/session-time')
-                .then(response => response.json())
-                .then(data => {
-                    const minutes = Math.floor(data.remaining / 60);
-                    const seconds = data.remaining % 60;
-                    const timerElement = document.getElementById('sessionTimer');
-                    if (timerElement) {
-                        timerElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-                    }
-                })
-                .catch(err => console.log('Timer update failed'));
-        }
-        
-        // Track user activity events
-        const activityEvents = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click', 'keydown'];
-        
-        function resetTimer() {
-            resetInactivityTimer();
-            
-            fetch('/ping', {
-                method: 'HEAD',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                }
-            }).catch(err => console.log('Ping failed'));
-        }
-        
-        activityEvents.forEach(eventName => {
-            document.addEventListener(eventName, resetTimer);
-        });
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            resetInactivityTimer();
-            if (document.getElementById('sessionTimer')) {
-                updateSessionTimer();
-                setInterval(updateSessionTimer, 1000);
-            }
-        });
-        
-        document.addEventListener('visibilitychange', () => {
-            if (!document.hidden) {
-                resetTimer();
-            }
-        });
+        console.log('Global functions registered - openAuthModal available');
     </script>
+</body>
+</html>
 </body>
 </html>

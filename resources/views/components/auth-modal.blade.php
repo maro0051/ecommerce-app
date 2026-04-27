@@ -1,27 +1,13 @@
-<div x-data="{ showAuthModal: false, activeTab: 'login' }" 
-     x-show="showAuthModal" 
-     x-cloak
-     @open-auth-modal.window="showAuthModal = true"
-     class="fixed inset-0 z-50 overflow-y-auto"
-     style="display: none;">
-    
+<div id="authModal" class="fixed inset-0 z-50 overflow-y-auto" style="display: none;">
     <!-- Backdrop -->
-    <div class="fixed inset-0 bg-black/70 backdrop-blur-sm transition-opacity"
-         @click="showAuthModal = false"></div>
+    <div class="fixed inset-0 bg-black/70 backdrop-blur-sm transition-opacity" id="authModalBackdrop"></div>
     
     <!-- Modal -->
     <div class="flex min-h-full items-center justify-center p-4">
-        <div class="relative w-full max-w-md transform overflow-hidden rounded-2xl glass-card p-6 shadow-xl transition-all"
-             x-show="showAuthModal"
-             x-transition:enter="transition ease-out duration-300"
-             x-transition:enter-start="opacity-0 translate-y-4"
-             x-transition:enter-end="opacity-100 translate-y-0"
-             x-transition:leave="transition ease-in duration-200"
-             x-transition:leave-start="opacity-100 translate-y-0"
-             x-transition:leave-end="opacity-0 translate-y-4">
+        <div class="relative w-full max-w-md transform overflow-hidden rounded-2xl glass-card p-6 shadow-xl transition-all">
             
             <!-- Close Button -->
-            <button @click="showAuthModal = false" class="absolute right-4 top-4 text-gray-400 hover:text-accent transition-colors">
+            <button onclick="closeAuthModal()" class="absolute right-4 top-4 text-gray-400 hover:text-accent transition-colors">
                 <i class="fas fa-times text-xl"></i>
             </button>
             
@@ -34,33 +20,38 @@
             
             <!-- Tab Buttons -->
             <div class="flex gap-2 mb-6 border-b border-primary-light/30">
-                <button @click="activeTab = 'login'" 
-                        class="flex-1 pb-3 text-center transition-all duration-300"
-                        :class="activeTab === 'login' ? 'text-accent border-b-2 border-accent' : 'text-gray-400 hover:text-gray-300'">
+                <button onclick="switchTab('login')" id="loginTabBtn" class="flex-1 pb-3 text-center transition-all duration-300 text-accent border-b-2 border-accent">
                     <i class="fas fa-sign-in-alt mr-2"></i> Login
                 </button>
-                <button @click="activeTab = 'register'" 
-                        class="flex-1 pb-3 text-center transition-all duration-300"
-                        :class="activeTab === 'register' ? 'text-accent border-b-2 border-accent' : 'text-gray-400 hover:text-gray-300'">
+                <button onclick="switchTab('register')" id="registerTabBtn" class="flex-1 pb-3 text-center transition-all duration-300 text-gray-400 hover:text-gray-300">
                     <i class="fas fa-user-plus mr-2"></i> Register
                 </button>
             </div>
             
             <!-- Login Form -->
-            <div x-show="activeTab === 'login'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100">
-                <form method="POST" action="{{ route('login') }}" class="space-y-4">
+            <div id="loginForm" class="space-y-4">
+                <form method="POST" action="{{ route('login') }}" id="loginFormElement">
                     @csrf
+                    <input type="hidden" name="redirect" value="{{ url()->current() }}" id="redirectUrl">
                     <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">
+                            <i class="fas fa-envelope mr-2 text-accent"></i>
+                            Email Address
+                        </label>
                         <input type="email" name="email" required 
                                class="w-full rounded-lg input-glow"
-                               placeholder="Enter your email">
+                               placeholder="Enter your email"
+                               id="loginEmail">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">
+                            <i class="fas fa-lock mr-2 text-accent"></i>
+                            Password
+                        </label>
                         <input type="password" name="password" required 
                                class="w-full rounded-lg input-glow"
-                               placeholder="Enter your password">
+                               placeholder="Enter your password"
+                               id="loginPassword">
                     </div>
                     <div class="flex items-center justify-between">
                         <label class="flex items-center">
@@ -78,32 +69,49 @@
             </div>
             
             <!-- Register Form -->
-            <div x-show="activeTab === 'register'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100">
-                <form method="POST" action="{{ route('register') }}" class="space-y-4">
+            <div id="registerForm" class="space-y-4" style="display: none;">
+                <form method="POST" action="{{ route('register') }}" id="registerFormElement">
                     @csrf
+                    <input type="hidden" name="redirect" value="{{ url()->current() }}">
                     <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-2">Full Name</label>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">
+                            <i class="fas fa-user mr-2 text-accent"></i>
+                            Full Name
+                        </label>
                         <input type="text" name="name" required 
                                class="w-full rounded-lg input-glow"
-                               placeholder="Enter your full name">
+                               placeholder="Enter your full name"
+                               id="registerName">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">
+                            <i class="fas fa-envelope mr-2 text-accent"></i>
+                            Email Address
+                        </label>
                         <input type="email" name="email" required 
                                class="w-full rounded-lg input-glow"
-                               placeholder="Enter your email">
+                               placeholder="Enter your email"
+                               id="registerEmail">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">
+                            <i class="fas fa-lock mr-2 text-accent"></i>
+                            Password
+                        </label>
                         <input type="password" name="password" required 
                                class="w-full rounded-lg input-glow"
-                               placeholder="Choose a password">
+                               placeholder="Choose a password"
+                               id="registerPassword">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-2">Confirm Password</label>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">
+                            <i class="fas fa-check-circle mr-2 text-accent"></i>
+                            Confirm Password
+                        </label>
                         <input type="password" name="password_confirmation" required 
                                class="w-full rounded-lg input-glow"
-                               placeholder="Confirm your password">
+                               placeholder="Confirm your password"
+                               id="registerPasswordConfirmation">
                     </div>
                     <button type="submit" class="w-full btn-primary rounded-lg py-2 mt-4">
                         <i class="fas fa-user-plus mr-2"></i> Create Account
@@ -117,15 +125,89 @@
                     <div class="w-full border-t border-primary-light/30"></div>
                 </div>
                 <div class="relative flex justify-center text-sm">
-                    <span class="px-2 bg-primary-dark/50 text-gray-400">Or continue with</span>
+                    <span class="px-4 bg-primary-dark/50 text-gray-400">Or continue with</span>
                 </div>
             </div>
             
-            <!-- Guest Checkout Option -->
-            <button @click="showAuthModal = false" 
+            <!-- Guest Option -->
+            <button onclick="closeAuthModal()" 
                     class="w-full bg-gray-700/50 text-gray-300 rounded-lg py-2 hover:bg-gray-700 transition-all">
                 <i class="fas fa-shopping-bag mr-2"></i> Continue as Guest (Browse Only)
             </button>
         </div>
     </div>
 </div>
+
+<script>
+// Global modal functions
+function openAuthModal() {
+    var modal = document.getElementById('authModal');
+    if (modal) {
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+        switchTab('login');
+    }
+}
+
+function closeAuthModal() {
+    var modal = document.getElementById('authModal');
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+}
+
+function switchTab(tab) {
+    var loginForm = document.getElementById('loginForm');
+    var registerForm = document.getElementById('registerForm');
+    var loginTabBtn = document.getElementById('loginTabBtn');
+    var registerTabBtn = document.getElementById('registerTabBtn');
+    
+    if (tab === 'login') {
+        if (loginForm) loginForm.style.display = 'block';
+        if (registerForm) registerForm.style.display = 'none';
+        if (loginTabBtn) {
+            loginTabBtn.classList.add('text-accent', 'border-b-2', 'border-accent');
+            loginTabBtn.classList.remove('text-gray-400');
+        }
+        if (registerTabBtn) {
+            registerTabBtn.classList.remove('text-accent', 'border-b-2', 'border-accent');
+            registerTabBtn.classList.add('text-gray-400');
+        }
+    } else {
+        if (loginForm) loginForm.style.display = 'none';
+        if (registerForm) registerForm.style.display = 'block';
+        if (registerTabBtn) {
+            registerTabBtn.classList.add('text-accent', 'border-b-2', 'border-accent');
+            registerTabBtn.classList.remove('text-gray-400');
+        }
+        if (loginTabBtn) {
+            loginTabBtn.classList.remove('text-accent', 'border-b-2', 'border-accent');
+            loginTabBtn.classList.add('text-gray-400');
+        }
+    }
+}
+
+// Close modal when clicking backdrop
+document.addEventListener('DOMContentLoaded', function() {
+    var backdrop = document.getElementById('authModalBackdrop');
+    if (backdrop) {
+        backdrop.addEventListener('click', closeAuthModal);
+    }
+    
+    // Handle ESC key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            var modal = document.getElementById('authModal');
+            if (modal && modal.style.display === 'block') {
+                closeAuthModal();
+            }
+        }
+    });
+});
+
+// Make functions globally available
+window.openAuthModal = openAuthModal;
+window.closeAuthModal = closeAuthModal;
+window.switchTab = switchTab;
+</script>

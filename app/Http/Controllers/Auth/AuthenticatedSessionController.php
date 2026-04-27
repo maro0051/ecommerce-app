@@ -11,41 +11,35 @@ use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
 {
-    /**
-     * Display the login view.
-     */
     public function create(): View
     {
         return view('auth.login');
     }
 
-    /**
-     * Handle an incoming authentication request.
-     */
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
         $request->session()->regenerate();
 
-        // Check if user is admin and redirect accordingly
+        // Get redirect URL from request
+        $redirectUrl = $request->input('redirect');
+        
         if (Auth::user()->role === 'admin') {
             return redirect()->route('admin.dashboard');
         }
 
-        // Regular customers go to home page
+        if ($redirectUrl && filter_var($redirectUrl, FILTER_VALIDATE_URL)) {
+            return redirect($redirectUrl);
+        }
+
         return redirect()->route('home');
     }
 
-    /**
-     * Destroy an authenticated session.
-     */
     public function destroy(Request $request): RedirectResponse
     {
         Auth::guard('web')->logout();
-
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-
         return redirect('/');
     }
 }

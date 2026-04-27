@@ -28,11 +28,8 @@ class TrackUserActivity
                 Auth::logout();
                 Session::flush();
                 
-                // Store intended URL for redirect after login
-                Session::put('url.intended', $request->url());
-                
-                // Redirect to login page with inactivity message
-                return redirect()->route('login')->with('error', 'You have been logged out due to inactivity (10 minutes). Please login again.');
+                // Redirect to homepage with inactivity message
+                return redirect()->route('home')->with('error', 'You have been logged out due to 10 minutes of inactivity. Please login again to continue shopping.');
             }
 
             // Update last activity timestamp
